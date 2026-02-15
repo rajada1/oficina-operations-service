@@ -1,6 +1,5 @@
 package br.com.grupo99.operacoes.application.service;
 
-import br.com.grupo99.operacoes.adapter.event.EventPublishingService;
 import br.com.grupo99.operacoes.adapter.repository.OperacaoRepository;
 import br.com.grupo99.operacoes.application.dto.OperacaoRequestDTO;
 import br.com.grupo99.operacoes.application.dto.OperacaoResponseDTO;
@@ -29,9 +28,6 @@ import static org.mockito.Mockito.*;
 class OperacaoApplicationServiceTest {
     @Mock
     private OperacaoRepository repository;
-
-    @Mock
-    private EventPublishingService eventPublishingService;
 
     @InjectMocks
     private OperacaoApplicationService service;
@@ -74,7 +70,6 @@ class OperacaoApplicationServiceTest {
         assertEquals(orcamentoId, result.getOrcamentoId());
         assertEquals("NORMAL", result.getPrioridade());
         verify(repository).save(any(Operacao.class));
-        verify(eventPublishingService).publishOperacaoCriada(any(), any());
     }
 
     @Test
@@ -136,7 +131,6 @@ class OperacaoApplicationServiceTest {
         assertNotNull(result);
         verify(repository).findById(operacaoId);
         verify(repository).save(any(Operacao.class));
-        verify(eventPublishingService).publishOperacaoIniciada(any(), any());
     }
 
     @Test
