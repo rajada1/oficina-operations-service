@@ -5,7 +5,6 @@ import br.com.grupo99.operacoes.application.dto.OperacaoResponseDTO;
 import br.com.grupo99.operacoes.application.exception.BusinessException;
 import br.com.grupo99.operacoes.application.exception.ResourceNotFoundException;
 import br.com.grupo99.operacoes.adapter.repository.OperacaoRepository;
-import br.com.grupo99.operacoes.adapter.event.EventPublishingService;
 import br.com.grupo99.operacoes.domain.Operacao;
 import br.com.grupo99.operacoes.domain.PrioridadeOperacao;
 import br.com.grupo99.operacoes.domain.StatusOperacao;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OperacaoApplicationService {
     private final OperacaoRepository operacaoRepository;
-    private final EventPublishingService eventPublishingService;
 
     @Transactional
     public OperacaoResponseDTO criarOperacao(OperacaoRequestDTO requestDTO) {
@@ -44,7 +42,6 @@ public class OperacaoApplicationService {
                 .build();
 
         Operacao saved = operacaoRepository.save(operacao);
-        eventPublishingService.publishOperacaoCriada(saved.getId().toString(), saved.getNumeroOperacao());
 
         log.info("Operação criada com sucesso: {}", saved.getId());
         return OperacaoResponseDTO.fromDomain(saved);
@@ -97,7 +94,6 @@ public class OperacaoApplicationService {
         operacao.setDataInicio(LocalDateTime.now());
 
         Operacao updated = operacaoRepository.save(operacao);
-        eventPublishingService.publishOperacaoIniciada(updated.getId().toString(), updated.getStatus().name());
 
         log.info("Operação iniciada com sucesso: {}", id);
         return OperacaoResponseDTO.fromDomain(updated);
@@ -118,7 +114,6 @@ public class OperacaoApplicationService {
         operacao.setTempoRealizadoHoras(tempoRealizadoHoras);
 
         Operacao updated = operacaoRepository.save(operacao);
-        eventPublishingService.publishOperacaoConcluida(updated.getId().toString());
 
         log.info("Operação concluída com sucesso: {}", id);
         return OperacaoResponseDTO.fromDomain(updated);
