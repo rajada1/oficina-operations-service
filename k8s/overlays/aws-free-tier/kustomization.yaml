@@ -1,0 +1,13 @@
+resources:
+  - ../../namespace.yaml
+  - ../../configmap.yaml
+  - ../../secret.yaml
+  - ../../deployment.yaml
+  - ../../service.yaml
+
+patchesStrategicMerge:
+  - patch-service-loadbalancer.yaml
+  - serviceaccount.yaml
+
+commonLabels:
+  overlay: aws-free-tier

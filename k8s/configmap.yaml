@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: operations-service-config
+  namespace: operations-service
+  labels:
+    app: operations-service
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  AWS_REGION: "us-east-1"
+  LOG_LEVEL: "INFO"
+  DB_PORT: "5432"
+  DB_NAME: "operationsservice"
+  DB_HOST: "${DB_HOST}"
+  NEW_RELIC_APP_NAME: "operations-service"
+  NEW_RELIC_ENABLED: "true"
+  SQS_OPERATIONS_EVENTS_QUEUE: "operations-events.fifo"
+  SQS_CONSUMER_WAIT_TIME_SECONDS: "20"
+  SQS_MAX_NUMBER_OF_MESSAGES: "10"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-config
+  namespace: operations-service
+  labels:
+    app: operations-service
+data:
+  # Ajuste para o endereço real do Kafka/Confluent/Strimzi
+  bootstrap-servers: "kafka:9092"
